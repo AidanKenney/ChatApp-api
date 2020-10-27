@@ -17,9 +17,9 @@ class Posts(generics.ListCreateAPIView):
     def get(self, request):
         """Index request"""
         # Get all the posts:
-        # posts = Post.objects.all()
+        posts = Post.objects.all()
         # Filter the posts by owner, so you can only see your owned posts
-        posts = Post.objects.filter(owner=request.user.id)
+        # posts = Post.objects.filter(owner=request.user.id)
         # Run the data through the serializer
         data = PostSerializer(posts, many=True).data
         return Response({ 'posts': data })
@@ -44,9 +44,9 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         """Show request"""
         # Locate the post to show
         post = get_object_or_404(Post, pk=pk)
-        # Only want to show owned Post?
-        if not request.user.id == post.owner.id:
-            raise PermissionDenied('Unauthorized, you do not own this post')
+        # Only want to show owned Post? No.
+        # if not request.user.id == post.owner.id:
+        #     raise PermissionDenied('Unauthorized, you do not own this post')
 
         # Run the data through the serializer so it's formatted
         data = PostSerializer(post).data
