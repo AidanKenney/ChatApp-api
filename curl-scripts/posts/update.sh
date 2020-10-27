@@ -1,12 +1,13 @@
 #!/bin/bash
 
-curl "http://localhost:8000/chats/" \
+curl "http://localhost:8000/posts/${ID}/" \
   --include \
-  --request POST \
+  --request PATCH \
   --header "Content-Type: application/json" \
   --header "Authorization: Token ${TOKEN}" \
   --data '{
-    "chat": {
+    "post": {
+      "title": "'"${TITLE}"'",
       "content": "'"${CONTENT}"'",
       "owner": "'"${OWNER}"'"
     }
