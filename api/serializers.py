@@ -53,25 +53,32 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('id', 'content', 'owner', 'post')
 
+class CommentReadSerializer(serializers.ModelSerializer):
+    owner = UserSerializer(read_only=False)
+    class Meta:
+        model = Comment
+        fields = ('id', 'content', 'owner', 'post')
+
 class PostSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True)
+    comments = CommentReadSerializer(many=True, read_only=True)
+    owner = UserSerializer(read_only=True)
     class Meta:
         model = Post
         fields = ('id', 'title', 'content', 'owner', 'comments')
 
-class UserSerializer(serializers.ModelSerializer):
-    # This model serializer will be used for User creation
-    # The login serializer also inherits from this serializer
-    # in order to require certain data for login
-    class Meta:
-        # posts = PostSerializer(many=True, read_only=True)
-        # comments = CommentSerializer(many=True, read_only=True)
-        # get_user_model will get the user model (this is required)
-        # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
-        model = get_user_model()
-        fields = ('id', 'email', 'password')
-        extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } }
-
-    # This create method will be used for model creation
-    def create(self, validated_data):
-        return get_user_model().objects.create_user(**validated_data)
+# class UserSerializer(serializers.ModelSerializer):
+#     # This model serializer will be used for User creation
+#     # The login serializer also inherits from this serializer
+#     # in order to require certain data for login
+#     class Meta:
+#         # posts = PostSerializer(many=True, read_only=True)
+#         # comments = CommentSerializer(many=True, read_only=True)
+#         # get_user_model will get the user model (this is required)
+#         # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#referencing-the-user-model
+#         model = get_user_model()
+#         fields = ('id', 'email', 'password')
+#         extra_kwargs = { 'password': { 'write_only': True, 'min_length': 5 } }
+#
+#     # This create method will be used for model creation
+#     def create(self, validated_data):
+#         return get_user_model().objects.create_user(**validated_data)
