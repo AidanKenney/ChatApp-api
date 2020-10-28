@@ -54,18 +54,24 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('id', 'content', 'owner', 'post')
 
 class CommentReadSerializer(serializers.ModelSerializer):
-    owner = UserSerializer(read_only=False)
+    owner = UserSerializer(read_only=True)
     class Meta:
         model = Comment
         fields = ('id', 'content', 'owner', 'post')
 
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentReadSerializer(many=True, read_only=True)
-    owner = UserSerializer(read_only=True)
+    # owner = UserSerializer(read_only=True)
     class Meta:
         model = Post
         fields = ('id', 'title', 'content', 'owner', 'comments')
 
+class PostReadSerializer(serializers.ModelSerializer):
+    comments = CommentReadSerializer(many=True, read_only=True)
+    owner = UserSerializer(read_only=True)
+    class Meta:
+        model = Post
+        fields = ('id', 'title', 'content', 'owner', 'comments')
 # class UserSerializer(serializers.ModelSerializer):
 #     # This model serializer will be used for User creation
 #     # The login serializer also inherits from this serializer

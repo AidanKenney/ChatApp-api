@@ -8,7 +8,7 @@ from django.contrib.auth import get_user, authenticate, login, logout
 from django.middleware.csrf import get_token
 
 from ..models.post import Post
-from ..serializers import PostSerializer, UserSerializer
+from ..serializers import PostSerializer, UserSerializer, PostReadSerializer
 
 # Create your views here.
 class Posts(generics.ListCreateAPIView):
@@ -21,7 +21,7 @@ class Posts(generics.ListCreateAPIView):
         # Filter the posts by owner, so you can only see your owned posts
         # posts = Post.objects.filter(owner=request.user.id)
         # Run the data through the serializer
-        data = PostSerializer(posts, many=True).data
+        data = PostReadSerializer(posts, many=True).data
         return Response({ 'posts': data })
 
     def post(self, request):
@@ -49,7 +49,7 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         #     raise PermissionDenied('Unauthorized, you do not own this post')
 
         # Run the data through the serializer so it's formatted
-        data = PostSerializer(post).data
+        data = PostReadSerializer(post).data
         return Response({ 'post': data })
 
     def delete(self, request, pk):
