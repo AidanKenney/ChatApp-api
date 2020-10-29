@@ -8,7 +8,7 @@ from django.contrib.auth import get_user, authenticate, login, logout
 from django.middleware.csrf import get_token
 
 from ..models.comment import Comment
-from ..serializers import CommentSerializer
+from ..serializers import CommentSerializer, CommentReadSerializer
 
 # Create your views here.
 class Comments(generics.ListCreateAPIView):
@@ -21,7 +21,7 @@ class Comments(generics.ListCreateAPIView):
         # Filter the posts by owner, so you can only see your owned posts
         comments = Comment.objects.filter(owner=request.user.id)
         # Run the data through the serializer
-        data = CommentSerializer(comments, many=True).data
+        data = CommentReadSerializer(comments, many=True).data
         return Response({ 'comments': data })
 
     def post(self, request):
@@ -49,7 +49,7 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied('Unauthorized, you do not own this comment')
 
         # Run the data through the serializer so it's formatted
-        data = CommentSerializer(comment).data
+        data = CommentReadSerializer(comment).data
         return Response({ 'comment': data })
 
     def delete(self, request, pk):
