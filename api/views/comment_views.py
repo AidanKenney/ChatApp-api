@@ -82,7 +82,7 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
         # Add owner to data object now that we know this user owns the resource
         request.data['comment']['owner'] = request.user.id
         # Validate updates with serializer
-        data = CommentSerializer(comment, data=request.data['comment'])
+        data = CommentReadSerializer(comment, data=request.data['comment'])
         if data.is_valid():
             # Save & send a 204 no content
             data.save()
