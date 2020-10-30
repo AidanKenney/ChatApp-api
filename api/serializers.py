@@ -75,11 +75,11 @@ class PostSerializer(serializers.ModelSerializer):
     # owner = UserSerializer(read_only=True)
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'owner', 'comments', 'created_at', 'updated_at')
+        fields = ('id', 'title', 'content', 'owner', 'comments', 'votes', 'created_at', 'updated_at')
 
 class PostReadSerializer(serializers.ModelSerializer):
     comments = CommentReadSerializer(many=True, read_only=True)
     owner = UserReadSerializer(read_only=True)
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'owner', 'comments', 'created_at', 'updated_at')
+        fields = ('id', 'title', 'content', 'owner', 'comments', 'votes', 'created_at', 'updated_at')
