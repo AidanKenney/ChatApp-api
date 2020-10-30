@@ -51,7 +51,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'content', 'owner', 'post')
+        fields = ('id', 'content', 'owner', 'post', 'created_at', 'updated_at')
 
 class UserReadSerializer(serializers.ModelSerializer):
     # This model serializer will be used for User creation
@@ -68,18 +68,18 @@ class CommentReadSerializer(serializers.ModelSerializer):
     owner = UserReadSerializer(read_only=True)
     class Meta:
         model = Comment
-        fields = ('id', 'content', 'owner', 'post')
+        fields = ('id', 'content', 'owner', 'post', 'created_at', 'updated_at')
 
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentReadSerializer(many=True, read_only=True)
     # owner = UserSerializer(read_only=True)
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'owner', 'comments')
+        fields = ('id', 'title', 'content', 'owner', 'comments', 'created_at', 'updated_at')
 
 class PostReadSerializer(serializers.ModelSerializer):
     comments = CommentReadSerializer(many=True, read_only=True)
     owner = UserReadSerializer(read_only=True)
     class Meta:
         model = Post
-        fields = ('id', 'title', 'content', 'owner', 'comments')
+        fields = ('id', 'title', 'content', 'owner', 'comments', 'created_at', 'updated_at')

@@ -22,7 +22,8 @@ class Posts(generics.ListCreateAPIView):
         # posts = Post.objects.filter(owner=request.user.id)
         # Run the data through the serializer
         data = PostReadSerializer(posts, many=True).data
-        return Response({ 'posts': data })
+        sortedData = sorted(data, key = lambda i : i['created_at'], reverse=True)
+        return Response({ 'posts': sortedData })
 
     def post(self, request):
         """Create request"""
