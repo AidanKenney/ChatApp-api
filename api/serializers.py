@@ -5,6 +5,7 @@ from .models.mango import Mango
 from .models.user import User
 from .models.post import Post
 from .models.comment import Comment
+from .models.vote import Vote
 
 class MangoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -70,6 +71,17 @@ class CommentReadSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('id', 'content', 'owner', 'post', 'created_at', 'updated_at')
 
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = ('id', 'up_or_down', 'owner', 'post', 'created_at', 'updated_at')
+
+class VoteReadSerializer(serializers.ModelSerializer):
+    owner = UserReadSerializer(read_only=True)
+    class Meta:
+        model = Vote
+        fields = ('id', 'up_or_down', 'owner', 'post', 'created_at', 'updated_at')
+
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentReadSerializer(many=True, read_only=True)
     # owner = UserSerializer(read_only=True)
@@ -80,6 +92,7 @@ class PostSerializer(serializers.ModelSerializer):
 class PostReadSerializer(serializers.ModelSerializer):
     comments = CommentReadSerializer(many=True, read_only=True)
     owner = UserReadSerializer(read_only=True)
+    votes = VoteReadSerializer(many=True, read_only=True)
     class Meta:
         model = Post
         fields = ('id', 'title', 'content', 'owner', 'comments', 'votes', 'created_at', 'updated_at')
