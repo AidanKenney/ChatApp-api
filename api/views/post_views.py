@@ -12,7 +12,7 @@ from ..serializers import PostSerializer, UserSerializer, PostReadSerializer
 
 # Create your views here.
 class Posts(generics.ListCreateAPIView):
-    permission_classes=(IsAuthenticated,)
+    permission_classes=(IsAuthenticatedOrReadOnly,)
     serializer_class = PostSerializer
     def get(self, request):
         """Index request"""
@@ -40,7 +40,7 @@ class Posts(generics.ListCreateAPIView):
         return Response(post.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes=(IsAuthenticated,)
+    permission_classes=(IsAuthenticatedOrReadOnly,)
     def get(self, request, pk):
         """Show request"""
         # Locate the post to show
